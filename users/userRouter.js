@@ -54,6 +54,11 @@ function validateUserId(req, res, next) {
 
 function validateUser(req, res, next) {
   // do your magic!
+  if(req.body && Object.keys(req.body).length > 0) {
+    next();
+  } else {
+    res.status(400).json({message: "missing user data"})
+  }
 }
 
 function validateuser(req, res, next) {
