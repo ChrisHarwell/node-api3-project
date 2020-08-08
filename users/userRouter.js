@@ -45,12 +45,12 @@ function validateUserId(req, res, next) {
         next();
       } else {
         res.status(400).json({message: 'user id not found'})
-      }
+      };
     })
     .catch(error => {
 
-    })
-}
+    });
+};
 
 function validateUser(req, res, next) {
   // do your magic!
@@ -58,11 +58,7 @@ function validateUser(req, res, next) {
     next();
   } else {
     res.status(400).json({message: "missing user data"})
-  }
-}
-
-function validateuser(req, res, next) {
-  // do your magic!
-}
+  };
+};
 
 module.exports = router;
