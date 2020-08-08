@@ -1,5 +1,6 @@
 const express = require("express");
 const data = require("./postDb.js");
+const { getById, remove, get } = require("./postDb.js");
 
 const router = express.Router();
 
@@ -21,7 +22,7 @@ router.get("/", (req, res) => {
 
 router.get("/:id", validatePostId, (req, res) => {
   // do your magic!
-  const {id} = req.params;
+  const { id } = req.params;
   data
     .get(id)
     .then((post) => {
@@ -38,6 +39,28 @@ router.get("/:id", validatePostId, (req, res) => {
 
 router.delete("/:id", validatePostId, (req, res) => {
   // do your magic!
+  const { id } = req.params;
+  const { text } = req.body;
+
+  getById(id).then((post) => {
+    post === 0
+      ? res
+          .status(404)
+          .json({ message: "The post with the specified ID does not exist." })
+      : remove(id).then((removedPost) => {
+          if (removedPost === 1) {
+            get().then((posts) => {
+              if (post) {
+                res.status(200).json(post);
+              } else {
+                res
+                  .status(500)
+                  .json({ error: "The post could not be removed" });
+              }
+            });
+          }
+        });
+  });
 });
 
 router.put("/:id", validatePostId, (req, res) => {
