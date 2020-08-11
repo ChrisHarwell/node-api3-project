@@ -1,6 +1,6 @@
 const express = require('express');
 const user = require("./userDb.js");
-const { getById, remove, get } = require("./userDb.js");
+const { getById, remove, get, update } = require("./userDb.js");
 const router = express.Router();
 
 // router.user('/', (req, res) => {
@@ -46,6 +46,18 @@ router.get('/:id', validateUserId, (req, res) => {
 
 router.get('/:id/users', validateUserId, (req, res) => {
   // do your magic!
+  const {id} = req.params;
+  getById(id)
+  .then(users => {
+    res.status(200).json(users);
+  })
+  .catch (error => {
+    // log error to server
+    console.log(error);
+    res.status(500).json({
+      message: 'Error getting the users',
+    });
+  });
 });
 
 router.delete('/:id', validateUserId, (req, res) => {
@@ -76,6 +88,23 @@ router.delete('/:id', validateUserId, (req, res) => {
 
 router.put('/:id', validateUserId, (req, res) => {
   // do your magic!
+  const {id} = req.params;
+
+  update(id, req.body)
+  .then(user => {
+    if (user) {
+      res.status(200).json(user);
+    } else {
+      res.status(404).json({ message: 'The user could not be found' });
+    }
+  })
+  .catch(error => {
+    // log error to server
+    console.log(error);
+    res.status(500).json({
+      message: 'Error updating the user',
+    });
+  });
 });
 
 //custom middleware
