@@ -88,14 +88,13 @@ function validatePostId(req, res, next) {
 function validatePost(req, res, next) {
   const requestBody = req.body;
   try {
-    if (requestBody.length() <= 0) {
+    if (Object.keys(requestBody).length() === 0) {
       res.status(400).json({ message: "missing user data" });
     } else if (requestBody.text.length() < 0) {
       res.status(400).json({ message: "missing required text field" });
     }
-    {
-    }
   } catch (error) {}
+  
 }
 
 module.exports = router;

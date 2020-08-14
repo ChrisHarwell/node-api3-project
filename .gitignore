@@ -62,3 +62,6 @@ typings/
 
 # Mac files
 .DS_Store
+
+# stryker temp files
+.stryker-tmp
